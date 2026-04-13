@@ -21,7 +21,7 @@ const QUESTIONS = [
   {"id":14,"phase":"フェーズ2：情報のインストールと保存","text":"複雑な家具やプラモデルを組み立てる時、どのように進めるのが得意ですか？","options":[{"key":"A","text":"完成図や設計図の全体像（イラスト）を常に手元に置いて確認する"},{"key":"B","text":"誰かに手順を口に出して読み上げてもらいながら作業する"},{"key":"C","text":"説明書は読まず、とりあえずパーツを触って感覚で組み立てる"},{"key":"D","text":"手順「1」「2」などのテキストでの指示を一つずつ順番にこなす"}]},
   {"id":15,"phase":"フェーズ2：情報のインストールと保存","text":"好きな曲を覚える時、どの部分が一番最初にインプットされますか？","options":[{"key":"A","text":"ミュージックビデオの映像や、アーティストの衣装・表情"},{"key":"B","text":"メロディラインや、楽器のリズム・音程"},{"key":"C","text":"ライブで自分が盛り上がっている感覚や、ダンスの動き"},{"key":"D","text":"歌詞の意味や、そこに含まれるメッセージ性"}]},
   {"id":16,"phase":"フェーズ2：情報のインストールと保存","text":"自分が感動した映画やアニメの面白さを友達に伝える時、どうやって伝えますか？","options":[{"key":"A","text":"「あのシーンの映像がとにかく綺麗だった！」と情景を語る"},{"key":"B","text":"主題歌やBGMの良さ、声優の演技のすばらしさを中心に語る"},{"key":"C","text":"身振り手振りを大きく交えて、キャラクターの動きを再現する"},{"key":"D","text":"ストーリーの伏線や、セリフの深い意味を論理的に解説する"}]},
-  {"id":17,"phase":"フェーズ2：情報のインストールと保存","text":"授業のノートをとる時、あなたのノートはどんな風になりやすいですか？","options":[{"key":"A","text":"色ペンをたくさん使い、図やイラストが多い"},{"key":"B","text":"先生の雑談や「ここ重要」という声のトーンをメモしている"},{"key":"C","text":"ノートをとるより、実際に問題を解きながら手で覚える"},{"key":"D","text":"矢印や箇条書きを使って、論理的な構成でまとまっている"}]},
+  {"id":17,"phase":"フェーズ2：情報のインストールと保存","text":"授業のノートをとる時、あなたのノートはどんな風になりやすいですか？","options":[{"key":"A","text":"色ペンをたくさん使い、図やイラストが多い"},{"key":"B","text":"先生の雑談や「ここ重要」という声のトーンをメモしている"},{"key":"C","text":"ノートをとるより、実際に問題を解きながら手で覚える"},{"key":"D","text":"矢印や箇条書きを使って、論理的な���成でまとまっている"}]},
   {"id":18,"phase":"フェーズ2：情報のインストールと保存","text":"人の顔と名前を覚える時、何を手がかりにすることが多いですか？","options":[{"key":"A","text":"その人の顔のパーツや、着ていた服の映像"},{"key":"B","text":"その人の声のトーンや、名前の響き"},{"key":"C","text":"その人と一緒に何をしたか、どう動いたかのエピソード"},{"key":"D","text":"その人の名刺の文字や、プロフィール情報"}]},
   {"id":19,"phase":"フェーズ2：情報のインストールと保存","text":"夏休みの自由研究や工作で、一番ワクワクする瞬間は？","options":[{"key":"A","text":"完成図や綺麗なレイアウトを頭の中でイメージしている時"},{"key":"B","text":"友達や家族と「どうする？」とアイデアを話し合っている時"},{"key":"C","text":"実際に手を動かして、材料を切ったり貼ったりしている時"},{"key":"D","text":"テーマの理由や、結果の考察を文章でまとめる時"}]},
   {"id":20,"phase":"フェーズ2：情報のインストールと保存","text":"本や漫画を読むとき、頭の中はどうなっていますか？","options":[{"key":"A","text":"シーンがフルカラーの映像として再生されている"},{"key":"B","text":"キャラクターのセリフが「声」として脳内で聞こえる"},{"key":"C","text":"キャラクターの感情や痛みが、自分の体にも移るように感じる"},{"key":"D","text":"作者の意図や伏線の構造を考えながら活字を追っている"}]},
@@ -37,7 +37,7 @@ const QUESTIONS = [
   {"id":30,"phase":"フェーズ3：バッテリーの消費と警告","text":"自分のスマホや手帳を、親に勝手に見られたとわかった時、どう反応しますか？","options":[{"key":"A","text":"親の期待を裏切っていないか不安になり、顔色をうかがう"},{"key":"B","text":"何を見たか、なぜ見たかを追及するエネルギーすら湧かず無視する"},{"key":"C","text":"「プライバシーの侵害だ」と論理的に怒りをぶつけ、話し合う"},{"key":"D","text":"鍵をかけたりパスワードを変えたりして、物理的に完全にブロックする"}]}
 ]
 
-type Step = "login" | "question" | "loading" | "complete"
+type Step = "login" | "consent" | "question" | "loading" | "complete"
 type Answer = { questionId: number; key: string }
 
 export default function OSDiagnosticPage() {
@@ -49,11 +49,15 @@ export default function OSDiagnosticPage() {
   const currentQuestion = QUESTIONS[currentQuestionIndex]
   const progress = ((currentQuestionIndex) / QUESTIONS.length) * 100
 
-  const handleStartDiagnosis = useCallback(() => {
+  const handleProceedToConsent = useCallback(() => {
     if (osId.trim()) {
-      setStep("question")
+      setStep("consent")
     }
   }, [osId])
+
+  const handleStartDiagnosis = useCallback(() => {
+    setStep("question")
+  }, [])
 
   const handleSelectOption = useCallback((key: string) => {
     const newAnswer: Answer = {
@@ -94,7 +98,13 @@ export default function OSDiagnosticPage() {
             key="login"
             osId={osId}
             setOsId={setOsId}
-            onStart={handleStartDiagnosis}
+            onStart={handleProceedToConsent}
+          />
+        )}
+        {step === "consent" && (
+          <ConsentScreen
+            key="consent"
+            onAgree={handleStartDiagnosis}
           />
         )}
         {step === "question" && (
@@ -195,6 +205,145 @@ function LoginScreen({
         {/* フッター */}
         <p className="text-xs text-muted-foreground text-center">
           中学3年生 自己理解アセスメント
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
+// 同意画面
+function ConsentScreen({
+  onAgree,
+}: {
+  onAgree: () => void
+}) {
+  const [isAgreed, setIsAgreed] = useState(false)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="flex min-h-screen flex-col items-center justify-center px-4 py-8"
+    >
+      <div className="w-full max-w-lg space-y-6">
+        {/* ヘッダー */}
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-cyber-emerald to-cyber-blue shadow-lg shadow-cyber-emerald/30">
+            <svg
+              className="w-7 h-7 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            診断を始める前に
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            以下の内容をよく読んでください
+          </p>
+        </div>
+
+        {/* カード */}
+        <div className="bg-card rounded-2xl shadow-xl shadow-slate-200/50 border border-border overflow-hidden">
+          {/* スクロール可能なテキストエリア */}
+          <div className="h-64 overflow-y-auto p-5 space-y-5 text-sm leading-relaxed text-foreground">
+            <section className="space-y-2">
+              <h2 className="font-bold text-base text-foreground flex items-center gap-2">
+                <span className="w-6 h-6 rounded-md bg-cyber-emerald/10 text-cyber-emerald flex items-center justify-center text-xs font-bold">1</span>
+                診断の目的
+              </h2>
+              <p className="text-muted-foreground pl-8">
+                この「OS仕様書診断」は、あなた自身の考え方や行動のパターン（心のOS）を理解するためのツールです。正解や不正解はありません。自分に一番近いと思う選択肢を直感で選んでください。診断結果は、あなたの強みや特性を知り、今後の学校生活やチーム活動に活かすことを目的としています。
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="font-bold text-base text-foreground flex items-center gap-2">
+                <span className="w-6 h-6 rounded-md bg-cyber-emerald/10 text-cyber-emerald flex items-center justify-center text-xs font-bold">2</span>
+                結果の利用範囲
+              </h2>
+              <p className="text-muted-foreground pl-8">
+                診断結果は以下の目的で利用されます：
+              </p>
+              <ul className="text-muted-foreground pl-8 space-y-1">
+                <li className="flex items-start gap-2">
+                  <span className="text-cyber-emerald mt-1">-</span>
+                  <span>担任の先生からの個別フィードバック</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyber-emerald mt-1">-</span>
+                  <span>クラスでのグループワークやチーム編成の参考</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyber-emerald mt-1">-</span>
+                  <span>進路指導や面談での対話材料</span>
+                </li>
+              </ul>
+              <p className="text-muted-foreground pl-8">
+                結果がクラスメイトに公開されたり、成績評価に使われることはありません。
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="font-bold text-base text-foreground flex items-center gap-2">
+                <span className="w-6 h-6 rounded-md bg-cyber-emerald/10 text-cyber-emerald flex items-center justify-center text-xs font-bold">3</span>
+                個人情報の保護について
+              </h2>
+              <p className="text-muted-foreground pl-8">
+                入力されたデータは、学校のセキュリティポリシーに基づき厳重に管理されます。データは教育目的以外には使用せず、第三者への提供は行いません。診断データは学年終了時に安全に削除されます。
+              </p>
+            </section>
+          </div>
+
+          {/* 区切り線 */}
+          <div className="border-t border-border" />
+
+          {/* 同意チェックボックス */}
+          <div className="p-5 space-y-4">
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="relative flex-shrink-0 mt-0.5">
+                <input
+                  type="checkbox"
+                  checked={isAgreed}
+                  onChange={(e) => setIsAgreed(e.target.checked)}
+                  className="peer sr-only"
+                />
+                <div className="w-5 h-5 rounded-md border-2 border-border bg-input peer-checked:bg-cyber-emerald peer-checked:border-cyber-emerald transition-all duration-200 flex items-center justify-center">
+                  {isAgreed && (
+                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <span className="text-sm text-foreground leading-relaxed group-hover:text-cyber-emerald transition-colors duration-200">
+                上記の内容を理解し、同意します
+              </span>
+            </label>
+
+            <button
+              onClick={onAgree}
+              disabled={!isAgreed}
+              className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-cyber-emerald to-cyber-blue shadow-lg shadow-cyber-emerald/30 hover:shadow-cyber-emerald/50 disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              診断を開始する
+            </button>
+          </div>
+        </div>
+
+        {/* フッター */}
+        <p className="text-xs text-muted-foreground text-center">
+          質問についてわからないことがあれば先生に聞いてください
         </p>
       </div>
     </motion.div>
