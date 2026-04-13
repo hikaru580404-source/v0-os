@@ -81,23 +81,11 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-@property --cyber-emerald {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: oklch(0.65 0.2 170);
-}
-
-@property --cyber-blue {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: oklch(0.6 0.2 240);
-}
-
 @theme inline {
-  --color-cyber-emerald: var(--cyber-emerald);
-  --color-cyber-blue: var(--cyber-blue);
-  --color-navy-deep: var(--navy-deep);
-  --color-slate-soft: var(--slate-soft);
+  --color-cyber-emerald: oklch(0.65 0.2 170);
+  --color-cyber-blue: oklch(0.6 0.2 240);
+  --color-navy-deep: oklch(0.2 0.04 250);
+  --color-slate-soft: oklch(0.55 0.02 250);
   --font-sans: var(--font-noto-sans-jp), 'Noto Sans JP', sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
